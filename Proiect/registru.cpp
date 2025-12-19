@@ -14,7 +14,6 @@ void registru::change_memory(const std::string memory_)
         {
             std::cout << "Setati reset-ul pe 0." << std::endl;
             this->memory.replace(0, 8, "00000000");
-            this->print(); 
         }
         else
         {
