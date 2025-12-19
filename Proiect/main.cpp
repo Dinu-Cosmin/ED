@@ -48,7 +48,7 @@ int main()
     {
         getline(std::cin, x);
         start = 0;
-        if(x.size() == 1)
+        if(x.size() == 1 && x.front() > '1')
         {
             char a = x.front();
             switch(a)
