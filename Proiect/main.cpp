@@ -86,7 +86,7 @@ int main()
                     break;
                 default:
                     valid_option = false;
-                    std::cout << "Invalid option. Program ended by user." << std::endl;
+                    std::cout << "Invalid option. Program ended by user being an idiot." << std::endl;
                     break;
             }       
         }
