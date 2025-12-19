@@ -1,6 +1,6 @@
 #include <string>
+#include <unistd.h>
 #include <thread>
-#include <chrono>
 #include "registru.h"
 
 static bool start;
@@ -12,14 +12,10 @@ void rotate_values(registru *reg)
     {
         if(start)
         {
-            reg->print();     
-            std::this_thread::sleep_for(std::chrono::seconds(1));                   
             reg->rotate_data();
+            reg->print();
         }
-        else
-        {
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
+        sleep(1);
     }
 }
 
@@ -58,10 +54,12 @@ int main()
                 case '3':
                     reg.functionare = 1;
                     std::cout << "Registru in paralel" << std::endl;
+                    reg.print();
                     break;
                 case '4':
                     std::cout << "Reset setat pe 0" << std::endl;
                     reg.reset = 0;
+                    reg.print();
                     break;
                 case '5':
                     if(!reg.enable)
@@ -101,14 +99,11 @@ int main()
                 reg = x;           
             }
 
+            reg.print();
             if(!reg.functionare)
             {
                 start = 1;
-            }
-            else
-            {
-                reg.print();
-            }  
+            }    
 
         }
 
