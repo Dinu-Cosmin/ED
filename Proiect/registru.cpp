@@ -6,28 +6,39 @@ void registru::print()
     std::cout << "Registru: " << this->memory << std::endl;
 }
 
+std::string registru::get_memory()
+{
+    return this->memory;
+}
+
 void registru::change_memory(const std::string memory_)
 {
-    if(!this->enable)
+    if(this->reset && !this->enable)
     {
-        if(this->reset == 1)
-        {
-            std::cout << "Setati reset-ul pe 0." << std::endl;
-            this->memory.replace(0, 8, "00000000");
-        }
-        else
-        {
-            if(memory_.size() != 8)
-            {
-                this->memory.replace(0, 8, "00000000");
-                this->memory.replace(8 - memory_.size(), memory_.size(), memory_);
-            }
-            else
-            {
-                this->memory = memory_;
-            }
-        }
+        std::cout << "Setati reset-ul pe 0." << std::endl;
+        this->memory = "00000000";
+        return;
     }
+
+    std::string& alias = this->enable ? this->temp_memory : this->memory;
+
+    if(!this->enable && !this->temp_memory.empty())
+    {
+        this->memory = this->temp_memory;
+        this->temp_memory.clear();
+        return;
+    }
+
+    if(memory_.size() != 8)
+    {
+        alias = "00000000";
+        alias.replace(8 - memory_.size(), memory_.size(), memory_);
+    }
+    else
+    {
+        alias = memory_;
+    }      
+
 }
 
 registru& registru::operator=(const std::string memory_)

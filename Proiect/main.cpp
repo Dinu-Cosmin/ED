@@ -10,7 +10,7 @@ void rotate_values(registru *reg)
 {
     while(!stop)
     {
-        if(start)
+        if(start && !reg->enable)
         {
             reg->rotate_data();            
             reg->print();
@@ -28,6 +28,10 @@ int main()
     bool valid_option = true;
     stop = 0;
     start = 0;
+
+    std::cout << "By default, registrul este in paralel (functionare = 0)." << std::endl
+        << "Pentru a introduce starea initiala a registrului in inel, setati intai enable-ul pe high." << std::endl
+    << std::endl;
 
     std::string x;
     std::cout 
@@ -52,12 +56,12 @@ int main()
 
                 case '2':
                     reg.functionare = 0;
-                    std::cout << "Registru in inel." << std::endl;
-                    start = 1;
+                    std::cout << "Registru in paralel." << std::endl;
                     break;
                 case '3':
                     reg.functionare = 1;
-                    std::cout << "Registru in paralel" << std::endl;
+                    std::cout << "Registru in inel" << std::endl;
+                    start = 1;
                     break;
                 case '4':
                     std::cout << "Reset setat pe 0" << std::endl;
@@ -74,6 +78,7 @@ int main()
                 case '6':
                     reg.enable = 0;
                     std::cout << "Enable setat pe 0." << std::endl;
+                    reg.change_memory(reg.get_memory());
                     break;
                 case '7':
                     reg.enable = 1;
@@ -96,14 +101,14 @@ int main()
                     break;
                 }
             }
-            if(data_only)
+            if(data_only && (!reg.functionare || reg.enable == 1))
             {
                 reg = x;           
             }
 
             reg.print();
 
-            if(!reg.functionare)
+            if(reg.functionare)
             {
                 start = 1;
             }

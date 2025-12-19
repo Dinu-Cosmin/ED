@@ -5,6 +5,7 @@ class registru
 {
     private:
         std::string memory;
+        std::string temp_memory;
     public:
         bool reset;
         bool functionare;
@@ -17,6 +18,8 @@ class registru
         {
             this->memory.clear();
         }
+
+        std::string get_memory();
 
         void rotate_data(const size_t shift=1);
         void change_memory(const std::string memory_="00000000");
