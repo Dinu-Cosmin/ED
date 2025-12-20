@@ -3,17 +3,14 @@
 #include <chrono>
 #include "registru.h"
 
-static bool start;
-static bool stop;
-
-void rotate_values(registru *reg)
+void rotate_values(registru& reg, const bool& start, const bool& stop)
 {
     while(!stop)
     {
-        if(start && !reg->enable)
+        if(start && !reg.enable)
         {
-            reg->rotate_data();            
-            reg->print();
+            reg.rotate_data();            
+            reg.print();
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         else
@@ -26,8 +23,8 @@ void rotate_values(registru *reg)
 int main()
 {
     bool valid_option = true;
-    stop = 0;
-    start = 0;
+    bool stop = 0;
+    bool start = 0;
 
     std::cout << "By default, registrul este in paralel (functionare = 0)." << std::endl
         << "Pentru a introduce starea initiala a registrului in inel, setati intai enable-ul pe high." << std::endl
@@ -42,7 +39,7 @@ int main()
     << std::endl;
 
     registru reg;
-    std::thread inel(rotate_values, &reg);
+    std::thread inel(rotate_values, std::cref(reg), std::cref(start), std::cref(stop));
 
     while(valid_option)
     {
@@ -119,6 +116,10 @@ int main()
     }
 
     stop = 1;
-    inel.join();
+    if(inel.joinable())
+    {
+        inel.join();        
+    }
+
     return 0;
 }
